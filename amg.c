@@ -96,6 +96,17 @@ main( hypre_int argc,
    HYPRE_Solver        pcg_solver;
    HYPRE_Solver        pcg_precond = NULL, pcg_precond_gotten;
 
+   HYPRE_Solver        amgdd_solver;
+
+   /* amg-dd options */
+   HYPRE_Int amgdd_start_level = 0;
+   HYPRE_Int amgdd_padding = 1;
+   HYPRE_Int amgdd_fac_num_relax = 1;
+   HYPRE_Int amgdd_num_comp_cycles = 2;
+   HYPRE_Int amgdd_fac_relax_type = 3;
+   HYPRE_Int amgdd_fac_cycle_type = 1;
+   HYPRE_Int amgdd_num_ghost_layers = 1;
+   
    HYPRE_Int           myid = 0;
    HYPRE_Int           num_procs = 1;
    HYPRE_Int           agg_num_levels = 1;
@@ -544,7 +555,21 @@ main( hypre_int argc,
 
       /* use BoomerAMG as preconditioner */
       if (myid == 0 && print_stats) { hypre_printf("Solver: AMG-PCG\n"); }
-      HYPRE_BoomerAMGCreate(&pcg_precond);
+
+      //HYPRE_BoomerAMGCreate(&pcg_precond);
+      HYPRE_BoomerAMGDDCreate(&amgdd_solver);
+      HYPRE_BoomerAMGDDGetAMG(amgdd_solver, &pcg_precond);
+
+      /* AMG-DD options */
+      HYPRE_BoomerAMGDDSetStartLevel(amgdd_solver, amgdd_start_level);
+      HYPRE_BoomerAMGDDSetPadding(amgdd_solver, amgdd_padding);
+      HYPRE_BoomerAMGDDSetFACNumRelax(amgdd_solver, amgdd_fac_num_relax);
+      HYPRE_BoomerAMGDDSetFACNumCycles(amgdd_solver, amgdd_num_comp_cycles);
+      HYPRE_BoomerAMGDDSetFACRelaxType(amgdd_solver, amgdd_fac_relax_type);
+      HYPRE_BoomerAMGDDSetFACCycleType(amgdd_solver, amgdd_fac_cycle_type);
+      HYPRE_BoomerAMGDDSetNumGhostLayers(amgdd_solver, amgdd_num_ghost_layers);
+
+      
       HYPRE_BoomerAMGSetTol(pcg_precond, pc_tol);
       /*HYPRE_BoomerAMGSetCoarsenType(pcg_precond, coarsen_type);*/
       HYPRE_BoomerAMGSetInterpType(pcg_precond, interp_type);
@@ -562,8 +587,8 @@ main( hypre_int argc,
       HYPRE_BoomerAMGSetMaxRowSum(pcg_precond, 1.0);
       HYPRE_PCGSetMaxIter(pcg_solver, mg_max_iter);
       HYPRE_PCGSetPrecond(pcg_solver,
-                          (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGSolve,
-                          (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGSetup,
+                          (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGDDSolve,
+                          (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGDDSetup,
                           pcg_precond);
 
       HYPRE_PCGGetPrecond(pcg_solver, &pcg_precond_gotten);
@@ -628,7 +653,7 @@ main( hypre_int argc,
       HYPRE_PCGGetFinalRelativeResidualNorm(pcg_solver, &final_res_norm);
 
 
-      HYPRE_BoomerAMGDestroy(pcg_precond);
+      HYPRE_BoomerAMGDDDestroy(pcg_precond);
 
       HYPRE_ParCSRPCGDestroy(pcg_solver);
 
@@ -685,7 +710,20 @@ main( hypre_int argc,
       /* use BoomerAMG as preconditioner */
       if (myid == 0 && print_stats) { hypre_printf("Solver: AMG-GMRES\n"); }
 
-      HYPRE_BoomerAMGCreate(&pcg_precond);
+      //HYPRE_BoomerAMGCreate(&pcg_precond);
+      HYPRE_BoomerAMGDDCreate(&amgdd_solver);
+      HYPRE_BoomerAMGDDGetAMG(amgdd_solver, &pcg_precond);
+
+      /* AMG-DD options */
+      HYPRE_BoomerAMGDDSetStartLevel(amgdd_solver, amgdd_start_level);
+      HYPRE_BoomerAMGDDSetPadding(amgdd_solver, amgdd_padding);
+      HYPRE_BoomerAMGDDSetFACNumRelax(amgdd_solver, amgdd_fac_num_relax);
+      HYPRE_BoomerAMGDDSetFACNumCycles(amgdd_solver, amgdd_num_comp_cycles);
+      HYPRE_BoomerAMGDDSetFACRelaxType(amgdd_solver, amgdd_fac_relax_type);
+      HYPRE_BoomerAMGDDSetFACCycleType(amgdd_solver, amgdd_fac_cycle_type);
+      HYPRE_BoomerAMGDDSetNumGhostLayers(amgdd_solver, amgdd_num_ghost_layers);
+
+      
       HYPRE_BoomerAMGSetTol(pcg_precond, pc_tol);
       /*HYPRE_BoomerAMGSetCoarsenType(pcg_precond, coarsen_type);*/
       HYPRE_BoomerAMGSetInterpType(pcg_precond, interp_type);
@@ -701,8 +739,8 @@ main( hypre_int argc,
       HYPRE_BoomerAMGSetMaxRowSum(pcg_precond, max_row_sum);
       HYPRE_GMRESSetMaxIter(pcg_solver, mg_max_iter);
       HYPRE_GMRESSetPrecond(pcg_solver,
-                            (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGSolve,
-                            (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGSetup,
+                            (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGDDSolve,
+                            (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGDDSetup,
                             pcg_precond);
 
       HYPRE_GMRESGetPrecond(pcg_solver, &pcg_precond_gotten);
@@ -762,7 +800,7 @@ main( hypre_int argc,
       HYPRE_GMRESGetNumIterations(pcg_solver, &num_iterations);
       HYPRE_GMRESGetFinalRelativeResidualNorm(pcg_solver, &final_res_norm);
 
-      HYPRE_BoomerAMGDestroy(pcg_precond);
+      HYPRE_BoomerAMGDDDestroy(pcg_precond);
 
       HYPRE_ParCSRGMRESDestroy(pcg_solver);
       FOM2 = cum_nnz_AP / wall_time;

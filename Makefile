@@ -29,7 +29,7 @@ INCLUDES = ${HYPRE_CUDA_INCLUDE} ${HYPRE_HIP_INCLUDE} ${MPIINCLUDE} ${HYPRE_UMPI
 ##################################################################
 ## Set path to hypre installation
 ##################################################################
-HYPRE_DIR = /usr/WS1/li50/hypre/releases/src/hypre
+HYPRE_DIR = /Users/benwibking/hypre/src/hypre
 
 ##################################################################
 ##  MPI options - this is needed for Crusher, Tioga, RZVernal,
@@ -44,9 +44,9 @@ HYPRE_DIR = /usr/WS1/li50/hypre/releases/src/hypre
 ########################################################################
 # CUDA options - set correct paths depending on cuda package
 ########################################################################
-HYPRE_CUDA_PATH    = /usr/tce/packages/cuda/cuda-10.1.243
-HYPRE_CUDA_INCLUDE = -I${HYPRE_CUDA_PATH}/include
-HYPRE_CUDA_LIBS    = -L${HYPRE_CUDA_PATH}/lib64 -lcudart -lcusparse -lcublas -lcurand
+HYPRE_CUDA_PATH    = #/usr/tce/packages/cuda/cuda-10.1.243
+HYPRE_CUDA_INCLUDE = #-I${HYPRE_CUDA_PATH}/include
+HYPRE_CUDA_LIBS    = #-L${HYPRE_CUDA_PATH}/lib64 -lcudart -lcusparse -lcublas -lcurand
 
 ########################################################################
 # HIP options set correct path depending on rocm version
@@ -58,9 +58,9 @@ HYPRE_HIP_LIBS    = #-L${HYPRE_HIP_PATH}/lib -lamdhip64 -lrocsparse -lrocrand
 ##################################################################
 ##  UMPIRE options
 ##################################################################
-HYPRE_UMPIRE_LIB_DIR      = -L/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/lib
-HYPRE_UMPIRE_INCLUDE      = -I/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/include
-HYPRE_UMPIRE_LIB          = -lumpire
+HYPRE_UMPIRE_LIB_DIR      = # -L/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/lib
+HYPRE_UMPIRE_INCLUDE      = # -I/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/include
+HYPRE_UMPIRE_LIB          = # -lumpire
 
 ########################################################################
 # Compiling and linking options
@@ -72,7 +72,7 @@ CDEFS = -DHYPRE_TIMING
 ########################################################################
 # MPI only
 ########################################################################
-COPTS = -O2 -DHAVE_CONFIG_H
+COPTS = -g -O0 -DHAVE_CONFIG_H
 LINKOPTS =
 
 ########################################################################
