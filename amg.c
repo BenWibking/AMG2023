@@ -589,10 +589,10 @@ main( hypre_int argc,
       HYPRE_PCGSetPrecond(pcg_solver,
                           (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGDDSolve,
                           (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGDDSetup,
-                          pcg_precond);
+                          amgdd_solver);
 
       HYPRE_PCGGetPrecond(pcg_solver, &pcg_precond_gotten);
-      if (pcg_precond_gotten !=  pcg_precond)
+      if (pcg_precond_gotten !=  amgdd_solver)
       {
          hypre_printf("HYPRE_ParCSRPCGGetPrecond got bad precond\n");
          return (-1);
@@ -653,7 +653,7 @@ main( hypre_int argc,
       HYPRE_PCGGetFinalRelativeResidualNorm(pcg_solver, &final_res_norm);
 
 
-      HYPRE_BoomerAMGDDDestroy(pcg_precond);
+      HYPRE_BoomerAMGDDDestroy(amgdd_solver);
 
       HYPRE_ParCSRPCGDestroy(pcg_solver);
 
@@ -741,10 +741,10 @@ main( hypre_int argc,
       HYPRE_GMRESSetPrecond(pcg_solver,
                             (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGDDSolve,
                             (HYPRE_PtrToSolverFcn) HYPRE_BoomerAMGDDSetup,
-                            pcg_precond);
+                            amgdd_solver);
 
       HYPRE_GMRESGetPrecond(pcg_solver, &pcg_precond_gotten);
-      if (pcg_precond_gotten != pcg_precond)
+      if (pcg_precond_gotten != amgdd_solver)
       {
          hypre_printf("HYPRE_GMRESGetPrecond got bad precond\n");
          return (-1);
@@ -800,7 +800,7 @@ main( hypre_int argc,
       HYPRE_GMRESGetNumIterations(pcg_solver, &num_iterations);
       HYPRE_GMRESGetFinalRelativeResidualNorm(pcg_solver, &final_res_norm);
 
-      HYPRE_BoomerAMGDDDestroy(pcg_precond);
+      HYPRE_BoomerAMGDDDestroy(amgdd_solver);
 
       HYPRE_ParCSRGMRESDestroy(pcg_solver);
       FOM2 = cum_nnz_AP / wall_time;
