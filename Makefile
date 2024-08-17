@@ -6,14 +6,14 @@
 # Compiler and external dependences
 ########################################################################
 #CC        = mpixlc
-CC        = mpicc
+#CC        = mpicc
 #CC        = mpiicc
-#CC        = cc
+CC        = cc
 
 #CXX       = mpixlC
-CXX       = mpicxx
+#CXX       = mpic++
 #CXX       = mpiicc
-#CXX       = CC
+CXX       = CC
 
 LINK_CC   = ${CXX}
 LINK_CXX  = ${CXX}
@@ -29,17 +29,17 @@ INCLUDES = ${HYPRE_CUDA_INCLUDE} ${HYPRE_HIP_INCLUDE} ${MPIINCLUDE} ${HYPRE_UMPI
 ##################################################################
 ## Set path to hypre installation
 ##################################################################
-HYPRE_DIR = /Users/benwibking/hypre/src/hypre
+HYPRE_DIR = /ccs/home/wibking/hypre/src/hypre
 
 ##################################################################
 ##  MPI options - this is needed for Crusher, Tioga, RZVernal,
 ##    when using AMD GPUs, might not be needed for other computers
 ##################################################################
-#MPIPATH = /opt/cray/pe/mpich/8.1.21/ofi/crayclang/10.0
-#MPIINCLUDE =  -I${MPIPATH}/include
-#MPILIBDIRS = -L${MPIPATH}/lib
-#MPILIBS    =  ${MPILIBDIRS} -lmpi  # -lmpi needed for AMD GPUs
-#MPIFLAGS   =
+MPIPATH = /opt/cray/pe/mpich/8.1.28/ofi/crayclang/17.0
+MPIINCLUDE =  -I${MPIPATH}/include
+MPILIBDIRS = -L${MPIPATH}/lib
+MPILIBS    =  ${MPILIBDIRS} -lmpi  # -lmpi needed for AMD GPUs
+MPIFLAGS   =
 
 ########################################################################
 # CUDA options - set correct paths depending on cuda package
@@ -51,16 +51,16 @@ HYPRE_CUDA_LIBS    = #-L${HYPRE_CUDA_PATH}/lib64 -lcudart -lcusparse -lcublas -l
 ########################################################################
 # HIP options set correct path depending on rocm version
 ########################################################################
-HYPRE_HIP_PATH    = #/opt/rocm-5.4.1
-HYPRE_HIP_INCLUDE = #-I${HYPRE_HIP_PATH}/include
-HYPRE_HIP_LIBS    = #-L${HYPRE_HIP_PATH}/lib -lamdhip64 -lrocsparse -lrocrand
+HYPRE_HIP_PATH    = /opt/rocm-5.7.1
+HYPRE_HIP_INCLUDE = -I${HYPRE_HIP_PATH}/include
+HYPRE_HIP_LIBS    = -L${HYPRE_HIP_PATH}/lib -lamdhip64 -lrocsparse -lrocrand
 
 ##################################################################
 ##  UMPIRE options
 ##################################################################
-HYPRE_UMPIRE_LIB_DIR      = # -L/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/lib
-HYPRE_UMPIRE_INCLUDE      = # -I/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/include
-HYPRE_UMPIRE_LIB          = # -lumpire
+HYPRE_UMPIRE_LIB_DIR      = #-L/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/lib
+HYPRE_UMPIRE_INCLUDE      = #-I/usr/workspace/hypre/ext-libs/Umpire/2022.03.1-nvcc10.1.243-sm_70-xl2021.09.22/include
+HYPRE_UMPIRE_LIB          = #-lumpire
 
 ########################################################################
 # Compiling and linking options
